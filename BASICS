@@ -1,0 +1,159 @@
+int n,j,d,s;
+scanf("%d, &n);
+j=n%10;
+d=(n/10)%10;
+s=n/100;
+if(n==(j*j*j)+(d*d*d)+(s*s*s))
+  printf("jeste")
+else
+  printf("nije")
+
+--------------------------------------------------------
+
+int g;
+scanf("%d",&g);
+if( (y%400==0) || ((g%4==0) && (g%100!=0)) );
+  printf("Godina %d je prestupna",g);
+else
+  printf("Godina %d nije prestupna",g);
+
+--------------------------------------------------------
+
+int n,c,max=0,cifra,L=1;
+scanf("%d%d,&n&cifra);
+while((n>0)&&L)
+{
+  c=n%10;
+  if(cifra==c);
+    L=0;
+  n=n/10;
+}
+if(L)
+  printf("Ne postoji");
+else
+  printf("Postoji");
+  
+--------------------------------------------------------
+
+int x, y=0, c;
+scanf("%d",&x);
+while(x>0)
+{
+  c=x%10;
+  y=y*10+c;
+  x=x/10;
+}
+printf("%d",y);
+
+--------------------------------------------------------
+
+int i,n,prost
+scanf("%d",&n);
+prost=(n%2=1)||(n==2);
+i=3;
+while((prost)&&(i<=n/2))
+{
+  prost= n%i != 0;
+  i=i+2;
+}
+if(prost)
+  printf("%d je prost\n",n);
+else
+  printf("%d nije prost\n",n);
+  
+--------------------------------------------------------
+
+float br,b,r,min=100000;
+int n,x;
+scanf("%d",&n);
+scanf("%d",&x);
+while(n>0)
+{
+  scanf("%f",&br);
+  r=abs(br-x);
+  if(r<min)
+  {
+    min=r;
+    b=br;
+  }
+  n--;
+}
+printf("%f\n",b);
+
+--------------------------------------------------------
+
+int n,i,s;
+scand("%d",&n);
+s=1;
+for(i=2;i<n/2;i++)
+{
+  if(n%i==0)
+    s=s+i;
+}
+if(n==s)
+  printf("Broj je savrsen");
+else 
+  printf("Broj nije savrsen");
+  
+--------------------------------------------------------
+
+int n,i;
+float a,u=0;
+scanf("%d",&n);
+scanf("%f",&a);
+for(i=1;i<=n;i++)
+{
+  printf("%10d. %10.2f\n",i,a);
+  u=u+a;
+  a=a*1.1;
+}
+printf("Ukupno je pretrcao %10.2f\n",u);
+
+--------------------------------------------------------
+
+long del(int a)
+{
+  int s=1;
+  for(int i=2;i<=a/2;i++)
+  {
+    if(a%i==0)
+      s=s+i;
+  }
+  return s;
+}
+
+int main()
+{
+  int n,a,b,c;
+  scanf("%d",&n);
+  for(int i=1;i<=n;i++)
+  {
+    a=del(i);
+    b=del(a);
+    if( (b==i) && (c!=b) && (i!=a) )
+    {
+      printf("%d i %d\n",i,a);
+      c=a;
+    }
+  }
+  return 0;
+}
+
+--------------------------------------------------------
+
+int suma(int n)
+{
+  if(n==1)
+    return 1;
+  else
+    return n+suma(n-2);
+}
+
+int main()
+{
+  int broj, s;
+  scanf("%d",&broj);
+  s=suma(2*broj-1);
+  printf("Neparni brojevi do %d imaju sumu %d", 2*broj-1,s);
+  return 0;
+}
