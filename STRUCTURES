@@ -1,0 +1,129 @@
+typedef struct
+{
+  int br;
+  int im;
+}Razlomak;
+
+Razlomak sabiranje(Razlomak a, Razlomak b)
+{
+  Razlomak R;
+  R.im=b.im*a.im;
+  R.br=a.im*b.br+b.im*a.br;
+  return R;
+}
+
+Razlomak oduzimanje(Razlomak a, Razlomak b)
+{
+  Razlomak R;
+  R.im=b.im*a.im;
+  R.br=a.im*b.br-b.im*a.br;
+  return R;
+}
+
+Razlomak mnozenje(Razlomak a, Razlomak b)
+{
+  Razlomak R;
+  R.im=b.im*a.im;
+  R.br=b.br*a.br;
+  return R;
+}
+
+Razlomak deljenje(Razlomak a, Razlomak b)
+{
+  Razlomak R;
+  R.im=b.im*a.br;
+  R.br=b.br*a.im;
+  return R;
+}
+
+int main()
+{
+  Razlomak a, b;
+  scanf("%d%d%d%d",&a.im,&a.br,&b.im,&b.br);
+  printf("a=%d/%d\n  b=%d/%d\n",a.im,a.br,b.im,b.br);
+  printf("Zbir: %d/%d\n Razlika: %d/%d \n Proizvod: %d/%d\n Kolicnik: %d/%d\n",sabiranje(a,b),oduzimanje(a,b),mnozenje(a,b),deljenje(a,b));
+  return 0;
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#define MAX 200
+
+typedef struct
+{
+  char ime[20];
+  float cena;
+}Proizvod;
+
+int prosecna_cena(Proizvod korpa[], int n)
+{
+  int s=0;
+  for(int i=0;o<n;i++)
+    s+=korpa[i].cena;
+  return s/n;
+}
+
+int main()
+{
+  int n;
+  Proizvod korpa[MAX];
+  float prosek;
+  int i;
+  scanf("%d",&n);
+  for(i=0;i<n;i++)
+  {
+    if(korpa[i].cena>prosek)
+      printf("%s %f\n",korpa[i].ime,korpa[i].cena);
+  }
+  return 0;
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+typedef struct()
+{
+  char ime[30];
+  float prosek;
+}Ucenik;
+
+void unos(Ucenik a[], int n)
+{
+  for(int i=0;i<n;i++)
+    scanf("%s%f",&a[i].ime,&a[i].prosek);
+}
+
+void razmeni(Ucenik *a, Ucenik *b)
+{
+  Ucenik pom;
+  *a=*b;
+  *b=pom;
+}
+
+void sort(Ucenik a[],int n)
+{
+  for(int i=0;i<n-1;++)
+  {
+    for(int j=i;j<n;j++)
+    {
+      if(a[j].prosek>a[i].prosek)
+        razmeni(&a[i],&a[j])
+     }
+  }
+}
+
+void ispis(Ucenik a[],int n)
+{
+  for(int i=0;i<n;i++)
+    printf("%s %.2f\n",a[i].ime,a[i].prosek);
+}
+
+int main()
+{
+  int n;
+  scanf("%d",&n);
+  Ucenik a[n];
+  unos(a,n);
+  sort(a,n);
+  ispis(a,n);
+  return 0;
+}
