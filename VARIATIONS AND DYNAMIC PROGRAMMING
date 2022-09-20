@@ -1,1 +1,353 @@
+void boji(char x[],int n,int k,char boja)
+{
+    if (k>n) 
+      pisi1(x,n);
+    else{
+        x[k]='b';
+        boji(x,n,k+1,'b');
+        x[k]='c';
+        boji(x,n,k+1,'c');
+        if (boja!='p')
+        {
+            x[k]='p';
+            boji(x,n,k+1,'p');
+        }
+    }
+}
 
+int main()
+{
+  char z[100];
+  int brSprat;
+  scanf("%d",&brSprat);
+  boji(z,brSprat,0,'a');
+  return  0;
+}
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+int main()
+{
+    int a[20][20], maxZbirDo[20][20];
+    char dosaoSa[20][20];
+    int redova, kolona;
+    scanf("%d%d",&redova,&kolona);
+    int r, k;
+    for (r = 0; r < redova; r++)
+        for (k = 0; k < kolona; k++)
+            scanf("%d",&a[r][k]) ;
+
+    maxZbirDo[0][0] = a[0][0];
+    for (k = 1; k < kolona; k++)
+    {
+        maxZbirDo[0][k] = maxZbirDo[0][k-1] + a[0][k];
+        dosaoSa[0][k] = 'L';
+    }
+
+    for (r = 1; r < redova; r++)
+    {
+        maxZbirDo[r][0] = maxZbirDo[r-1][0] + a[r][0];
+        dosaoSa[r][0] = 'G';
+    }
+
+    for (r = 1; r < redova; r++)
+    {
+        for (k = 1; k < kolona; k++)
+        {
+            if (maxZbirDo[r-1][k] > maxZbirDo[r][k-1])
+            {
+                maxZbirDo[r][k] = maxZbirDo[r-1][k] + a[r][k];
+                dosaoSa[r][k] = 'G';
+            }
+            else
+            {
+                maxZbirDo[r][k] = maxZbirDo[r][k-1] + a[r][k];
+                dosaoSa[r][k] = 'L';
+            }
+        }
+    }
+     printf("%d",maxZbirDo[redova-1][kolona-1]);
+
+    char putanja[redova + kolona - 1];
+    int iPut = redova + kolona - 2;
+    r = redova - 1;
+    k = kolona - 1;
+    while (r >= 0 && k >= 0)
+    {
+        if (dosaoSa[r][k] == 'G') { putanja[iPut] = 'D'; r--; }
+        else { putanja[iPut] = 'R'; k--; }
+        iPut--;
+    }
+
+   printf("\n");
+
+    for (iPut = 1; iPut < redova + kolona - 1; iPut++)
+        printf("%c-",putanja[iPut]);
+    return 0;
+}
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+void sveReci(char x[],int n,int k,char a[],int m)
+{
+    for(int i=0;i<m;i++)
+    {
+        x[k]=a[i];
+        if (k==n-1) 
+          pisi1(x,n);
+        else
+            sveReci(x,n,k+1,a,m);
+    }
+}
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+a)
+
+#include <stdio.h>
+#define MAX 20
+#define MAXX 1000
+void unos(int x[],int n)
+{
+    for(int i=0;i<n;i++)
+        scanf("%d",&x[i]);
+}
+void ispis(int x[],int n)
+{
+
+    printf("\n");
+    for(int i=0;i<=n;i++)
+        printf("%5d ",x[i]);
+}
+int main()
+{
+    int i,j,n,X;
+    int z[MAX],v[MAX],p[MAX],a[MAXX];
+    printf("Unesite broj predmeta \n");
+    scanf("%d",&n);
+    printf("Unesite niz zapremina \n");
+    unos(z,n);
+    printf("Unesite niz vrednosti \n");
+    unos(v,n);
+    printf("Unesite zapreminu ranca \n");
+    scanf("%d",&X);
+    for(i=0;i<=X;i++)
+    {
+        a[i]=0;
+        p[i]=-1;
+    }
+    printf("\n");
+    for (i=0;i<=X;i++)
+    printf("%5d ",i);
+    printf("\n");
+    ispis(a,X);
+    ispis(p,X);
+    for (i=1;i<=X;i++)
+        for(j=0;j<n;j++)
+        {
+            if(z[j]<=i && a[i]<a[i-z[j]]+v[j])
+            {
+                a[i]=a[i-z[j]]+v[j];
+                p[i]=j;
+            }
+            printf("\n");
+        }
+
+    ispis(a,X);
+    ispis(p,X);
+    printf("\nSadrzaj ranca je \n");
+    while (p[X]>=0)
+    {
+        printf("%d ",p[X]);
+        X-=z[p[X]];
+    }
+    return 0;
+}
+
+b)
+
+#include <stdio.h>
+#define MAX 20
+#define MAXX 1000
+void unos(int x[],int n)
+{
+    for(int i=0;i<n;i++)
+        scanf("%d",&x[i]);
+}
+void ispis(int x[][20],int n,int m)
+{
+
+    printf("\n");
+    for(int i=0;i<=n;i++)
+    {
+        for (int j=0;j<=m;j++)
+            printf("%5d ",x[i][j]);
+        printf("\n");
+    }
+}
+int main()
+{
+    int i,j,n,X;
+    int z[MAX],v[MAX],p[MAXX][MAX],a[MAXX][MAX];
+    printf("Unesite broj predmeta \n");
+    scanf("%d",&n);
+    printf("Unesite niz zapremina \n");
+    unos(z,n);
+    printf("Unesite niz vrednosti \n");
+    unos(v,n);
+    printf("Unesite zapreminu ranca \n");
+    scanf("%d",&X);
+    printf("\n");
+    for (i=0;i<=X;i++)
+    printf("%5d ",i);
+    printf("\n");
+    for(i=0;i<=n;i++)
+    {
+        a[i][0]=0;
+        p[i][0]=-1;
+    }
+    for(j=0;j<=X;j++)
+    {
+        a[0][j]=0;
+        p[0][j]=-1;
+    }
+    for (i=1;i<=n;i++)
+        for(j=1;j<=X;j++)
+        {
+                a[i][j]=a[i-1][j];
+                p[i][j]=p[i-1][j];
+                if((j>=z[i-1])&&(a[i][j]<v[i-1]+a[i-1][j-z[i-1]]))
+                {
+                    a[i][j]=a[i-1][j-z[i-1]]+v[i-1];
+                    p[i][j]=i-1;
+                }
+
+        }
+    ispis(a,n,X);
+    ispis(p,n,X);
+    printf("\nMaksimalna vrednost ranca je :%d",a[n][X]);
+    printf("\nSadrzaj ranca je \n");
+    i=n;
+    while (p[i][X]>=0&& i>0)
+    {
+        printf("%d ",p[i][X]);
+        i=p[i][X];
+        X-=z[i];
+    }
+
+    return 0;
+}
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+#include <string.h>
+int max(int a, int b)
+{
+  if (a > b )
+    return  a;
+  else
+    return b;
+}
+
+void ispis(char a[], int n)
+{
+    for (int i=0; i<n; i++)
+        printf("%c ",a[i]);
+    printf("\n");
+}
+
+void ispisI(char a[], int n)
+{
+    for (int i=n-1; i>=0; i--)
+        printf("%c ",a[i]);
+    printf("\n");
+}
+
+
+int main()
+{
+    char s1[] = "vatra";
+    char s2[] = "trava";
+    int m = strlen(s1);
+    int n = strlen(s2);
+    int a[n+1][m+1];
+    int d[n+1][m+1];
+    int i, j, k;
+    for (i=0; i<=n; i++)
+        a[i][0] = 0;
+    for (j=1; j<=m; j++)
+        a[0][j] = 0;
+    for (i=1; i<=n; i++)
+    {
+        for (j=1; j<=m; j++)
+            if (s2[i-1] == s1[j-1])
+                {
+                    a[i][j] = a[i-1][j-1] + 1;
+                }
+            else
+                a[i][j] = max(a[i][j-1], a[i-1][j]);
+    }
+    printf("Najduzi zajednicki podniz je: %d ",a[n][m]);
+    char c[n];
+    k = 0;
+    i = n;
+    j = m;
+    while (i > 0 && j > 0)
+    {
+        if (s2[i-1] == s1[j-1])
+        {
+            c[k++] = s2[i-1];
+            i--;
+            j--;
+        }
+        else if (a[i][j-1] > a[i-1][j])
+            j--;
+        else
+            i--;
+    }
+    printf("\n");
+    ispisI(c, k);
+    return 0;
+}
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+int main()
+{
+    int a[20][20], maxKvadrat[20][20];
+    int redova, kolona;
+    scanf("%d%d",&redova,&kolona);
+    int r, k, rMax, kMax;
+    for (r = 0; r < redova; ++r)
+        for (k = 0; k < kolona; ++k)
+            scanf("%d",&a[r][k]);
+    int ukupniMax = 0;
+    for (k = 0; k < kolona; k++)
+        maxKvadrat[0][k] = a[0][k];
+
+    for (r = 1; r < redova; r++)
+    {
+        maxKvadrat[r][0] = a[r][0];
+        for (k = 1; k < kolona; k++)
+        {
+            if (a[r][k] == 0) maxKvadrat[r][k] = 0;
+            else maxKvadrat[r][k] = min3(a[r-1][k-1], a[r-1][k], a[r][k-1]) + 1;
+        }
+    }
+   for (r = 0; r < redova; ++r)
+    {
+        for (k = 0; k < kolona; ++k)
+        {
+            if (maxKvadrat[r][k] > ukupniMax)
+            {
+                ukupniMax = maxKvadrat[r][k];
+                rMax = r;
+                kMax = k;
+            }
+        }
+      }
+    printf("%d",ukupniMax);
+    printf( "(%d,%d)",rMax,kMax );
+    return 0;
+}
