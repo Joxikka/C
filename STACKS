@@ -1,1 +1,130 @@
+Element *push(Element *glava, int x)
+{
+  Element *novi=(Element*)malloc(sizeof(Element));
+  novi->broj=x;
+  novi->sledeci=glava;
+  glava=novi;
+  return glava;
+}
 
+Element *pop(Element *glava, int *x)
+{
+  if(glava!=NULL)
+  {
+    Element *novi=glava;
+    *x=glava->broj;
+    glava=glava->sledeci;
+    free(novi);
+  }
+  return glava;
+}
+
+void zagrade(char a[])
+{
+  Element *s;
+  int x;
+  int n=strlen(a);
+  for(int i=0;i<n;i++)
+  {
+    if(a[i]=='(')
+      s=push(s,i);
+    else{
+      s=pop(s,&x);
+      printf("%d%d",x,i);
+    }
+  }
+}
+
+------------------------------------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+#include <ctype.h>
+typedef struct Element
+{
+    int broj;
+    struct Element *sledeci;
+} Element;
+
+void ispis(Element *vrh)
+{
+    for(; vrh!=NULL; vrh=vrh->sledeci)
+        printf("%d ",vrh->broj);
+    printf("\n");
+}
+Element* push(Element *vrh,int x)
+{
+    Element *novi=(Element*)malloc (sizeof(Element));
+    novi->broj=x;
+    novi->sledeci=vrh;
+    vrh=novi;
+    return vrh;
+}
+Element* pop(Element *vrh,int *x)
+{
+    if (vrh==NULL)
+    {
+
+        printf("Stek je prazan");
+        return NULL;
+    }
+    else
+    {
+        Element *q;
+        q=vrh;
+        *x=vrh->broj;
+        vrh=vrh->sledeci;
+        free(q);
+        return vrh;
+    }
+}
+int izraz(char s[])
+{
+    Element *vrh=NULL;
+    int n,br,x,y,broj;
+    br=broj=0;
+    n=strlen(s);
+    for(int i=0; i<n; i++)
+    {
+        if (s[i]>='0'&& s[i]<='9')
+        {
+            broj=broj*10+(s[i]-'0');
+            br=1;
+        }
+        else
+        {   if(br)
+            {
+                vrh=push(vrh,broj);
+                ispis(vrh);
+                broj=0;
+                br=0;
+            }
+            if(s[i]!=' ')
+            {
+                vrh=pop(vrh,&x);
+                vrh=pop(vrh,&y);
+                ispis(vrh);
+                switch (s[i])
+                {
+                case '+':   y+=x;  break;
+                case '-':   y-=x;  break;
+                case '*':   y*=x;  break;
+                case '/':   if (x) y/=x;
+                            else {
+                            printf ("Greska, deljenje nulom");
+                            exit(0);
+                            }
+                }
+                vrh=push(vrh,y);
+                ispis(vrh);
+    }}}
+    vrh=pop(vrh,&x);
+    return x;
+}
+int main()
+{
+    char s[100];
+    gets(s);
+    printf("Rezultat izraza je %d",izraz(s));
+    return 0;
+
+}
