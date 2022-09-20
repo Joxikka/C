@@ -1,1 +1,232 @@
+void obrisi_element(Cvor ** adresa_korena, int broj)
+{
+    Cvor *pomocni_cvor = NULL;
+    if (* adresa_korena == NULL) return;
+    if (broj < (* adresa_korena)->broj)
+    {   obrisi_element (&(* adresa_korena)->levo, broj);
+        return;}
+    if (broj > (* adresa_korena)->broj )
+    {   obrisi_element (&(* adresa_korena)->desno, broj);
+        return;}
+    if ((* adresa_korena)->levo == NULL && (* adresa_korena)->desno == NULL)
+    {   free(* adresa_korena);
+        *adresa_korena = NULL;
+        return;
+    }
+    if ((* adresa_korena)->levo != NULL && (* adresa_korena)->desno == NULL)
+    {   pomocni_cvor = (* adresa_korena)->levo;
+        free(* adresa_korena);
+        *adresa_korena = pomocni_cvor;
+        return;
+    }
+    if ((* adresa_korena)->levo == NULL && (* adresa_korena)->desno != NULL  )
+    {   pomocni_cvor = (* adresa_korena)->desno;
+        free(* adresa_korena);
+        *adresa_korena = pomocni_cvor;
+        return;
+    }
+    pomocni_cvor = pronadji_najmanji ((* adresa_korena)->desno);
+    (* adresa_korena)->broj = pomocni_cvor ->broj;
+    pomocni_cvor ->broj = broj;
+    obrisi_element (&(* adresa_korena)->desno, broj);
+}
 
+---------------------------------------------------------------------------------------------------------------
+
+int broj_listova(Cvor * koren)
+{
+    if (koren == NULL)
+        return 0;
+    if (koren ->levo == NULL && koren ->desno == NULL)
+        return 1;
+    return broj_listova(koren ->levo) + broj_listova(koren ->desno);
+}
+
+---------------------------------------------------------------------------------------------------------------
+
+void ispis_nivo(Cvor * koren, int i)
+{
+    if (koren == NULL)
+        return;
+    if (i == 0)
+    {
+        printf("%d ", koren ->broj);
+        return;
+    }
+    ispis_nivo(koren ->levo, i - 1);
+    ispis_nivo(koren ->desno, i - 1);
+}
+
+---------------------------------------------------------------------------------------------------------------
+
+int dubina_stabla(Cvor * koren)
+{
+    if (koren == NULL)
+        return 0;
+
+    int dl = dubina_stabla(koren ->levo);
+    int dd = dubina_stabla(koren ->desno);
+    if (dl > dd)
+        return dl + 1 ;
+    else
+        return dd + 1;
+}
+
+---------------------------------------------------------------------------------------------------------------
+
+void drvo_u_niz(int a[], int *i, Cvor* koren){
+
+	if(koren==NULL)
+		return;
+	drvo_u_niz(a, i, koren->levo);
+	a[*i]=koren->broj;
+	(*i)++;
+	drvo_u_niz(a, i, koren->desno);
+}
+
+---------------------------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+typedef struct tree
+{
+    char rec[11];
+    int br_pon;
+    struct tree* levo;
+    struct tree* desno;
+}tree;
+
+void dodaj(tree **koren, char c[]){
+    int tmp;
+    if(*koren != NULL)
+        tmp = strcmp((*koren)->rec, c);
+    if(*koren == NULL){
+        tree *novi = (tree*)malloc(sizeof(tree));
+        strcpy(novi->rec, c);
+        novi->desno = NULL;
+        novi->levo = NULL;
+        novi->br_pon = 1;
+        *koren = novi;
+    }
+
+    else if(tmp > 0)
+       dodaj(&(*koren)->levo, c);
+    else if(tmp == 0){
+        (*koren)->br_pon += 1;
+        return;
+    }
+    else
+        dodaj(&(*koren)->desno, c);
+}
+
+void ispis_LKD(tree *koren){
+    if(koren != NULL){
+        ispis_LKD(koren->levo);
+        printf("%s(%d)\n", koren->rec, koren->br_pon);
+        ispis_LKD(koren->desno);
+    }
+}
+/*
+int min(tree *koren){
+    if(koren->levo == NULL)
+        return koren->broj;
+    return min(koren->levo);
+}
+
+int max(int a, int b){
+    if(a > b)
+        return a;
+    return b;
+}
+
+int postoji(tree *koren, int a){
+    if(koren == NULL)
+        return 0;
+    if(koren->broj == a)
+        return 1;
+    if(koren->broj < a)
+        return postoji(koren->desno, a);
+    else
+        return postoji(koren->levo, a);
+}
+
+int maxDepth(tree * root)
+{
+  // Root being null means tree doesn't exist.
+  if (root == NULL)
+    return 0;
+
+  // Get the depth of the left and right subtree
+  // using recursion.
+  int leftDepth = maxDepth(root->levo);
+  int rightDepth = maxDepth(root->desno);
+
+  // Choose the larger one and add the root to it.
+  if (leftDepth > rightDepth)
+    return leftDepth + 1;
+  else
+    return rightDepth + 1;
+}
+
+int br_desno(tree *koren){
+    int br = 0;
+    if(koren != NULL)
+        while(koren->desno != NULL){
+            br++;
+            koren = koren->desno;
+        }
+    return br;
+}
+
+int brojListova(tree *koren){
+    if(koren == NULL)
+        return 0;
+    if(koren->desno == NULL && koren->levo == NULL)
+        return 1;
+    else
+        return brojListova(koren->levo) + brojListova(koren->desno);
+}
+
+void zbirGrana(tree *koren, int a[], int *i, int sum){
+
+    if(koren == NULL) return;
+
+    if(koren->levo == NULL && koren->desno == NULL){
+        a[*i] = sum + koren->broj;
+        *i += 1;
+        return;
+    }
+
+    sum += koren->broj;
+    zbirGrana(koren->levo, a, i, sum);
+    zbirGrana(koren->desno, a, i, sum);
+
+}*/
+
+int main(){
+    tree *koren = NULL;
+
+    int n, j;
+    char c[25];
+    scanf("%d", &n);
+    for(int i=0; i<n; i++){
+        scanf("%s", &c);
+        j = 0;
+        while(c[j] != '\n' && c[j] != '\0'){
+            if(isupper(c[j]) != 0)
+                c[j] = tolower(c[j]);
+            j++;
+        }
+        if(j <= 10)
+            c[j] = '\0';
+        else c[10] = '\0';
+        dodaj(&koren, c);
+    }
+
+    ispis_LKD(koren);
+
+    return 0;
+}
