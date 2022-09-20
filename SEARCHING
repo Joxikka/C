@@ -1,1 +1,52 @@
+int linear_search(int a[], int n, int x)
+{
+  int i;
+  for(i=0;i<n;i++){
+    if(a[i]==x)
+      return i;
+  }
+  return -1;
+}
 
+int linear_search_recursion(int a[], int i, int n, int x)
+{
+  if(i==n)
+    return -1;
+  if(a[i]==x)
+    return i;
+  return linear_search_recursion(a,i+1,n,x);
+}
+
+-------------------------------------------------------------------------------------------------------------
+
+int binary_search(int a[], int n, int x)
+{
+  int l,d,s;
+  l=0;
+  d=n-1;
+  while(l<=d)
+  {
+    s=l+(d-l)/2;
+    if(x==a[s])
+      return s;
+    if(x<a[s])
+      d=s-1;
+    else
+      l=s+1;
+  }
+  return -1;
+}
+
+int binary_search_recursion(int a[], int l, int d, int x)
+{
+  int s;
+  if(l>d)
+    return -1;
+  s=l+(d-l)/2;
+  if(x==a[s])
+    return s;
+  if(x<a[s])
+    return binary_search_recursion(a,l,s-1,x);
+  else
+    return binary_search_recursion(a,s+1,d,x);
+}
