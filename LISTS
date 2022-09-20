@@ -1,1 +1,227 @@
+void zameni(Element *glava, int x, int y)
+{
+    int br = 0;
+    Element *tekuci = glava;
+    while (tekuci != NULL)
+    {
+        if (tekuci->broj == x)
+            tekuci->broj = y;
+        tekuci = tekuci->sledeci;
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------
+
+Element* dodaj_na_poziciju(Element* glava, Element* novi, int br)
+{
+    Element *prethodni = NULL;
+    Element *tekuci = glava;
+
+    int i=0;
+    while (i<br && tekuci != NULL) {
+        prethodni = tekuci;
+        tekuci = tekuci->sledeci;
+        i++;
+    }
+    if (prethodni != NULL)
+    {
+        prethodni->sledeci = novi;
+        novi->sledeci = tekuci;
+    }
+    else
+    {
+        glava = novi;
+        novi->sledeci = tekuci;
+    }
+    return glava;
+}
+
+---------------------------------------------------------------------------------------------------------------
+
+Element* brisi(Element* glava, int x)
+{
+    Element *prethodni = NULL;
+    Element *tmp, *tekuci;
+    tekuci = glava;
+    while (tekuci != NULL)
+    {
+        if (tekuci->broj == x)
+        {
+            tmp = tekuci;
+            tekuci = tekuci->sledeci;
+            free(tmp);
+            if (prethodni == NULL)  
+            {
+                glava = tekuci;
+            } else
+                prethodni->sledeci = tekuci;
+        } else
+        {
+            prethodni = tekuci;
+            tekuci = tekuci->sledeci;
+        }
+    }
+    return glava;
+}
+
+---------------------------------------------------------------------------------------------------------------
+
+Element* Kruzna(Element* glava)
+{
+    Element* tekuci=glava;
+    while(tekuci->sledeci)
+        tekuci=tekuci->sledeci;
+    tekuci->sledeci=glava;
+    return glava;
+}
+
+---------------------------------------------------------------------------------------------------------------
+
+typedef struct Element{
+  int broj;
+  struct Element *sledeci;
+}Element;
+
+Element dodaj_na_kraj(Element *glava, Element *novi)
+{
+  novi->sledeci=NULL;
+  if(glava!=NULL)
+  {
+    Element *tekuci=glava;
+    while(tekuci->sledeci!=NULL)
+      tekuci=tekuci->sledeci;
+    tekuci->sledeci=novi;
+  }
+  else
+    glava=novi;
+  return glava;
+}
+
+void brisi(Element *prosli)
+{
+  Element *tekuci=prosli->sledeci;
+  prosli->sledeci=tekuci->sledeci;
+  free(tekuci);
+}
+
+Element *filter(Element *glava)
+{
+  Element *tekuci=glava;
+  Element *tekuci2=tekuci;
+  while(tekuci!=NULL)
+  {
+    while(tekuci2->sledeci!=NULL)
+    {
+      if(tekuci2->sledeci->broj==tekuci->broj)
+        brisi(tekuci2);
+      else
+        tekuci2=tekuci2->sledeci;
+    }
+    tekuci=tekuci->sledeci;
+    tekuci2=tekuci;
+  }
+}
+
+void ispis(Element *glava)
+{
+  Element *tekuci=glava;
+  printf("L=[");
+  while(tekuci!=NULL)
+  {
+    if(tekuci!=glava)
+      printf(",");
+    printf("%d",tekuci->broj);
+    tekuci=tekuci->sledeci;
+  }
+  printf("]\n");
+}
+
+int main()
+{
+  int a,n;
+  Element *lista=NULL;
+  Element *novi;
+  scanf("%d",&n);
+  for(int i=0;i<n;i++){
+    scanf("%d",&a);
+    novi=(Element*)malloc(sizeof(Element));
+    novi->broj=a;
+    lista=dodaj_na_kraj(lista_novi);
+  }
+  ispis(lista);
+  filter(lista);
+  ispis(lista);
+  return 0;
+}
+
+---------------------------------------------------------------------------------------------------------------
+
+void ispis(Element *glava)
+{
+  Element *tekuci=glava;
+  printf("L=[");
+  printf("%d",glava->broj);
+  tekuci=tekuci->sledeci;
+  while(tekuci!=glava)
+  {
+    printf(",");
+    printf("%d",tekuci->broj);
+    tekuci=tekuci->sledeci;
+  }
+  printf("]\n");
+}
+
+void spoji(Element *glava)
+{
+  Element *tekuci=glava;
+  while(tekuci->sledeci!=NULL)
+    tekuci=tekuci->sledeci;
+  tekuci->sledeci=glava;
+}
+
+void brisac(Element *glava, int k)
+{
+  Element *tekuci=glava;
+  Element *prosli=glava;
+  while(prosli->sledeci!=glava)
+    prosli=prosli->sledeci;
+  int i=1;
+  while(tekuci->sledeci!=tekuci)
+  {
+    if(i==k){
+      i=1;
+      printf("%d",tekuci->broj);
+      brisi(prosli);
+      tekuci=prosli->sledeci;
+    }
+    else{
+      i++;
+      prosli=tekuci;
+      tekuci=tekuci->sledeci;
+    }
+  }
+  printf("%d",tekuci->broj);
+}
+
+int main()
+{
+  int a,n,k;
+  Element *lista=NULL;
+  Element *novi;
+  scanf("%d",&n);
+  for(int i=0;i<n;i++)
+  {
+    scanf("%d",&a);
+    novi=(Element*)malloc(sizeof(Element));
+    novi->broj=a;
+    lista=dodaj_na_kraj(lista,novi);
+  }
+  scanf("%d",&k);
+  spoji(lista);
+  ispis(lista);
+  brisac(lista,k);
+  return 0;
+}
+
+---------------------------------------------------------------------------------------------------------------
 
