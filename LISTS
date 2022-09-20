@@ -225,3 +225,23 @@ int main()
 
 ---------------------------------------------------------------------------------------------------------------
 
+---------------------------------------------------------------------------------------------------------------
+
+Element* sort(Element *glava)
+{
+    Element *tekuci, *pocetni=glava;
+    while(pocetni->sledeci!=NULL)
+    {
+        tekuci=pocetni->sledeci;
+        while(tekuci!=NULL){
+            if(pocetni->broj > tekuci->broj){
+                int tmp=pocetni->broj;
+                pocetni->broj=tekuci->broj;
+                tekuci->broj=tmp;
+            }
+            tekuci=tekuci->sledeci;
+        }
+        pocetni=pocetni->sledeci;
+    }
+    return glava;
+}
