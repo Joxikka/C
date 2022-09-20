@@ -1,1 +1,159 @@
+typedef struct cvor
+{
+    char  inf;
+    struct  cvor* sledeci;
+} CVOR;
 
+void URed (CVOR **prvi, CVOR **poslednji, char znak)//Enqueue
+{
+    CVOR*   novi = malloc (sizeof (CVOR));
+    novi->inf = znak ;
+    novi->sledeci = NULL;
+    if (*prvi == NULL )
+        *prvi = novi;
+    else
+    {
+        (*poslednji)->sledeci=novi;
+    }
+    *poslednji=novi;
+}
+
+void IzReda(CVOR **prvi,  char *znak) //Dequeue
+{
+    if (*prvi != NULL)
+    {
+        if ((*prvi)-> sledeci == NULL)
+        {
+            *znak=(*prvi)->inf;
+            *prvi = NULL;
+            free(*prvi);
+        }
+        else
+        {
+            CVOR* tmp = *prvi;
+            *znak=(*prvi)->inf;
+            *prvi = (*prvi)-> sledeci;
+            free(tmp);
+        }
+    }
+    else
+    {
+        printf("\nRed je prazan");
+        return;
+    }
+}
+
+void Ispisi(CVOR* tek)
+{
+
+    if (tek==NULL)
+    {
+        printf("\nRed je prazan\n");
+        return;
+    }
+    printf("\nRed:\t");
+    while (tek != NULL)
+    {
+        printf("%c->", tek->inf);
+        tek=tek->sledeci;
+    }
+}
+int main()
+{
+    CVOR    *prvi = NULL,*poslednji=NULL;
+    char a,znak;
+    Ispisi(prvi);
+
+    printf("Unesi nisku\n");
+    while((a=getchar())!='\n')
+    {
+        URed(&prvi,&poslednji,a);
+        Ispisi(prvi);
+    }
+
+    while(prvi!=NULL)
+    {
+        IzReda(&prvi,&znak);
+        printf("\nZnak:%c", znak);
+    }
+    Ispisi(prvi);
+    return 0;
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct cvor
+{
+    int  inf;
+    struct  cvor* sledeci;
+} CVOR;
+
+void dodaj_na_pocetak(CVOR **glava, CVOR *novi)
+{
+    novi->sledeci = *glava;
+    *glava = novi;
+}
+
+void dodaj(CVOR *q,CVOR **prvi,CVOR **kraj)
+{
+    if(*kraj)
+        (*kraj)->sledeci=q;
+    else
+        *prvi=q;
+    *kraj=q;
+    (*kraj)->sledeci=NULL;
+}
+
+void transformicije(CVOR **prvi)
+{
+    CVOR *tekuci=*prvi,*prvi1,*prvi2,*kraj1,*kraj2,*q;
+    prvi1=prvi2=kraj1=kraj2=NULL;
+    while(tekuci)
+    {
+        q=tekuci;
+        tekuci=tekuci->sledeci;
+        if(q->inf>=0)
+            dodaj(q,&prvi1,&kraj1);
+        else
+            dodaj(q,&prvi2,&kraj2);
+    }
+    if (kraj1!=NULL) kraj1->sledeci=prvi2;
+    else prvi1=prvi2;
+    *prvi=prvi1;
+}
+void Ispisi(CVOR* tek)
+{
+
+    if (tek==NULL)
+    {
+        printf("\nRed je prazan\n");
+        return;
+    }
+    printf("\nRed:\t");
+    while (tek != NULL)
+    {
+        printf("%d->", tek->inf);
+        tek=tek->sledeci;
+    }
+}
+int main()
+{
+    CVOR    *lista = NULL,*poslednji=NULL;
+    int n,broj;
+    scanf("%d",&n);
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&broj);
+        CVOR* novi=malloc(sizeof(CVOR));
+        novi->inf=broj;
+        novi->sledeci=NULL;
+        dodaj_na_pocetak(&lista,novi);
+    }
+    Ispisi(lista);
+    transformicije(&lista);
+    Ispisi(lista);
+    return 0;
+}
